@@ -1,0 +1,33 @@
+.embeddedServiceHelpButton .helpButton .uiButton {
+        background-color: #005290;
+        font-family: "Arial", sans-serif;
+}
+.embeddedServiceHelpButton .helpButton .uiButton:focus {
+        outline: 1px solid #005290;
+}
+.embeddedServiceHelpButton .helpButton button {
+        background-color: #005290 !important;
+        font-family: "Arial", sans-serif !important;
+	background: #005290 !important;
+}
+.embeddedServiceLiveAgentStateChatItem.chatMessage button {
+	text-transform: capitalize !important;
+	white-space: pre-wrap !important;
+}
+.embeddedServiceLiveAgentStateChat .endChatContainer .endChatButton {
+	padding: 12px 6px !important;
+}
+embeddedservice-chat-header header button {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  position: static !important;
+}
+embeddedservice-chat-header header h2 {
+  padding-left: 0px;
+  padding-right: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  color: #ffffff;
+}

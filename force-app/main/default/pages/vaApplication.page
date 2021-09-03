@@ -1,0 +1,110 @@
+<apex:page >
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page
+  <!-- End Default Content REMOVE THIS -->
+<br /><br /><br /><br /><br /><br />
+  <!-- 
+<button onclick="bootstrapChat()">
+    Click me to show the Embedded Chat experience.
+</button>
+ -->
+<!-- Can remove these tags: Loaded in JavaScript below -->   
+<link rel="stylesheet" href="/resource/LIVECHAT_EDGE_CSS"></link>
+<script type='text/javascript' src="/resource/LIVECHAT_PARAMETERS"/>
+<script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+<!-- Can remove these tags -->
+<script type='text/javascript'>
+
+    function bootstrapChat() {
+        embedded_svc.bootstrapEmbeddedService();
+    }
+    // Above not needed today (yet)
+
+    var initESW = function(gslbBaseURL) {
+        // Example Values are encrpyted using a specific AES256 private key
+        var vFrstName        = 'FMkMBhNuQWk6/eLsUkPAJA==';
+        var vLastName        = 's7b1CnbU5v4zgGzAy0QVkQ==';
+        var vEmail           = 'WSzV7Jww6PcHKKbqpmV3lfbOlzWqIWJSzNCMJem8FRI=';
+        var vState           = 'tqoPlbfK5C7NebeDheUjUg==';
+        var vPolicyNumber    = 'q3kypfrMUM/uY0J3Aeh8qg==';
+        var vClientID        = 'wxbYja4VxhXOOKPi/x0iXA==';
+        var vToken           = 'qB20McFJQo7Zj5ee9O5Q6uVn3F6iKj2ooT/SUA47Eeo='; // NEW LINE FOR TOKEN
+        var vURL             = window.location.href;
+        var vLanguage        = 'en_US'; 
+        var vApplication     = 'EDGE';
+               
+        embedded_svc.settings.extraPrechatFormDetails = [
+        {"label":"Encrypted First Name", "value": vFrstName, "transcriptFields": ["Encrypted_First_Name__c"]},
+        {"label":"Encrypted Last Name", "value": vLastName, "transcriptFields": ["Encrypted_Last_Name__c"]},
+        {"label":"Encrypted Email", "value": vEmail, "transcriptFields": ["Encrypted_Email__c"]},
+        {"label":"Encrypted State", "value": vState, "transcriptFields": ["Encrypted_State__c"]},
+        {"label":"Encrypted Policy Number", "value": vPolicyNumber, "transcriptFields": ["Encrypted_Policy_Number__c"]},
+        {"label":"Encrypted Client ID", "value": vClientID, "transcriptFields": ["Encrypted_Client_ID__c"]},
+        {"label":"Token", "value": vToken, "transcriptFields": ["Token__c"]}, // NEW LINE FOR ENCRYPTED TOKEN
+        {"label":"URL", "value": vURL, "transcriptFields": ["URL__c"]},
+        {"label":"Language", "value": vLanguage, "transcriptFields": ["Language__c"]},
+        {"label":"Application", "value": vApplication, "transcriptFields": ["Application__c"]},
+        {"label":"Case Subject", "value": 'Virtual Assistant Generated' } // Set for the Case Subject for Application because of no pre-chat form.
+        ];
+        
+        embedded_svc.settings.extraPrechatInfo = [{ // 51-61 is to create the CASE for APPLICATION since we do not have Pre Chat.
+          "entityFieldMaps": [{
+            "doCreate": true,
+            "doFind": false,
+            "fieldName": "Subject",
+            "isExactMatch": true,
+            "label": "Case Subject"
+          }],
+          "entityName": "Case",
+          "saveToTranscript": "CaseId"
+        }];
+    
+        embedded_svc.settings.displayHelpButton = true; //Or false
+        embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+        embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+        embedded_svc.settings.entryFeature = 'LiveAgent';    
+        embedded_svc.settings.chatbotAvatarImgURL = LIVECHAT_PARAMETERS_EDGE.pageUrl + '/resource/LIVECHAT_CHAT_BOT_AVATAR'; // NEW LINE FOR AVATAR MAPPING
+
+        embedded_svc.init(
+            LIVECHAT_PARAMETERS_EDGE.instanceUrl,
+            LIVECHAT_PARAMETERS_EDGE.pageUrl,
+            gslbBaseURL,
+            LIVECHAT_PARAMETERS_EDGE.orgId,
+            LIVECHAT_PARAMETERS_EDGE.botName,
+            {
+                baseLiveAgentContentURL: LIVECHAT_PARAMETERS_EDGE.chatParameters.baseLiveAgentContentURL,
+                deploymentId: LIVECHAT_PARAMETERS_EDGE.chatParameters.deploymentId,
+                buttonId: LIVECHAT_PARAMETERS_EDGE.chatParameters.buttonId,
+                baseLiveAgentURL: LIVECHAT_PARAMETERS_EDGE.chatParameters.baseLiveAgentURL,
+                eswLiveAgentDevName: LIVECHAT_PARAMETERS_EDGE.chatParameters.eswLiveAgentDevName,
+                isOfflineSupportEnabled: LIVECHAT_PARAMETERS_EDGE.chatParameters.isOfflineSupportEnabled
+            }
+        );
+        
+    };
+
+    if (!window.embedded_svc) {
+        var sLiveChatParams = document.createElement('script');
+        sLiveChatParams.setAttribute('src', '/resource/LIVECHAT_PARAMETERS');
+        sLiveChatParams.onload = function() {
+            var s = document.createElement('script');
+            s.setAttribute('src', LIVECHAT_PARAMETERS_EDGE.instanceUrl + '/embeddedservice/5.0/esw.min.js');
+            s.onload = function() {            
+                var sLiveChatCSS = document.createElement('link');    
+                sLiveChatCSS.setAttribute("rel", "stylesheet");
+                sLiveChatCSS.setAttribute('type', 'text/css');
+                sLiveChatCSS.setAttribute('href', '/resource/LIVECHAT_EDGE_CSS');
+                sLiveChatCSS.onload = function() {
+                    initESW(null);
+                };
+                document.body.appendChild(sLiveChatCSS);         
+            };
+            document.body.appendChild(s);         
+        };
+        document.body.appendChild(sLiveChatParams);
+    } else {
+        initESW('https://service.force.com');
+    }
+</script>
+</apex:page>

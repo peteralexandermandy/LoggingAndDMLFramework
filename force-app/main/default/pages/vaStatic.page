@@ -1,0 +1,114 @@
+<apex:page >
+  <!-- Begin Default Content REMOVE THIS -->
+  <h1>Congratulations</h1>
+  This is your new Page
+  <!-- End Default Content REMOVE THIS -->
+
+
+<br /><br /><br /><br /><br /><br />
+
+  <!-- 
+<button onclick="bootstrapChat()">
+    Click me to show the Embedded Chat experience.
+</button>
+ -->
+
+<!-- Can remove these tags: Loaded in JavaScript below -->  
+<link rel="stylesheet" href="/resource/LIVECHAT_STATIC_CSS"></link>
+<script type='text/javascript' src="/resource/LIVECHAT_PARAMETERS"/>
+<script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
+<!-- Can remove these tags -->
+<script type='text/javascript'>
+
+    function bootstrapChat() {
+        embedded_svc.bootstrapEmbeddedService();
+    }
+
+    var initESW = function(gslbBaseURL) {
+    
+        var vURL             = window.location.href;
+        var vLanguage        = 'en_US'; 
+        var vApplication     = 'geico.com';
+        
+        embedded_svc.settings.extraPrechatFormDetails = [
+        {"label":"First Name", "transcriptFields": ["First_Name__c"]},
+        {"label":"Last Name", "transcriptFields": ["Last_Name__c"]},
+        {"label":"Email", "transcriptFields": ["Email_Address__c"]},
+        {"label":"State", "transcriptFields": ["State__c"]},
+        {"label":"URL", "value": vURL, "transcriptFields": ["URL__c"]},
+        {"label":"Language", "value": vLanguage, "transcriptFields": ["Language__c"]},
+        {"label":"Application", "value": vApplication, "transcriptFields": ["Application__c"]}
+        ];
+    
+        embedded_svc.settings.extraPrechatInfo = [{
+          "entityName":"Contact",
+          "entityFieldMaps": [{
+            "doCreate":false,
+            "doFind":false,
+            "fieldName":"LastName",
+            "isExactMatch":true,
+            "label":"Last Name"
+          }, {
+            "doCreate":false,
+            "doFind":false,
+            "fieldName":"FirstName",
+            "isExactMatch":true,
+            "label":"First Name"
+          }, {
+            "doCreate":false,
+            "doFind":false,
+            "fieldName":"Email",
+            "isExactMatch":true,
+            "label":"Email"
+          }]
+        }];
+    
+        embedded_svc.settings.displayHelpButton = true; //Or false
+        embedded_svc.settings.language = ''; //For example, enter 'en' or 'en-US'
+        embedded_svc.settings.enabledFeatures = ['LiveAgent'];
+        embedded_svc.settings.entryFeature = 'LiveAgent';
+        embedded_svc.settings.chatbotAvatarImgURL = LIVECHAT_PARAMETERS_STATIC.pageUrl + '/resource/LIVECHAT_CHAT_BOT_AVATAR';
+        embedded_svc.settings.autoOpenPostChat = true;
+       
+        embedded_svc.init(
+            LIVECHAT_PARAMETERS_STATIC.instanceUrl,
+            LIVECHAT_PARAMETERS_STATIC.pageUrl,
+            gslbBaseURL,
+            LIVECHAT_PARAMETERS_STATIC.orgId,
+            LIVECHAT_PARAMETERS_STATIC.botName,
+            {
+                baseLiveAgentContentURL: LIVECHAT_PARAMETERS_STATIC.chatParameters.baseLiveAgentContentURL,
+                deploymentId: LIVECHAT_PARAMETERS_STATIC.chatParameters.deploymentId,
+                buttonId: LIVECHAT_PARAMETERS_STATIC.chatParameters.buttonId,
+                baseLiveAgentURL: LIVECHAT_PARAMETERS_STATIC.chatParameters.baseLiveAgentURL,
+                eswLiveAgentDevName: LIVECHAT_PARAMETERS_STATIC.chatParameters.eswLiveAgentDevName,
+                isOfflineSupportEnabled: LIVECHAT_PARAMETERS_STATIC.chatParameters.isOfflineSupportEnabled
+            }
+        );
+
+    };
+    
+    if (!window.embedded_svc) {
+        var sLiveChatParams = document.createElement('script');
+        sLiveChatParams.setAttribute('src', '/resource/LIVECHAT_PARAMETERS');
+        sLiveChatParams.onload = function() {
+            var s = document.createElement('script');
+            s.setAttribute('src', LIVECHAT_PARAMETERS_STATIC.instanceUrl + '/embeddedservice/5.0/esw.min.js');
+            s.onload = function() {            
+                var sLiveChatCSS = document.createElement('link');    
+                sLiveChatCSS.setAttribute("rel", "stylesheet");
+                sLiveChatCSS.setAttribute('type', 'text/css');
+                sLiveChatCSS.setAttribute('href', '/resource/LIVECHAT_STATIC_CSS');
+                sLiveChatCSS.onload = function() {
+                    initESW(null);
+                };
+                document.body.appendChild(sLiveChatCSS);         
+            };
+            document.body.appendChild(s);         
+        };
+        document.body.appendChild(sLiveChatParams);
+    } else {
+        initESW('https://service.force.com');
+    }
+</script>
+</apex:page>
